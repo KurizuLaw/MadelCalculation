@@ -30,7 +30,8 @@ package MandelBrot.number;
  *
  * @see "https://introcs.cs.princeton.edu/java/32class/Complex.java.html"
  ******************************************************************************/
-public class Complex {
+public class Complex
+{
     private final double re;   // the real part
     private final double im;   // the imaginary part
 

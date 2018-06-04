@@ -3,18 +3,19 @@ package MandelBrot;
 import MandelBrot.model.*;
 import MandelBrot.number.Complex;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service("calcService")
 public class Calculating
 {
-    private Double realFrom;
-    private Double realTo;
-    private Double imaginaryFrom;
-    private Double imaginaryTo;
-    private Double interval;
-    private Integer iteration;
+    private BigDecimal realFrom;
+    private BigDecimal realTo;
+    private BigDecimal imaginaryFrom;
+    private BigDecimal imaginaryTo;
+    private BigDecimal interval;
+    private BigDecimal iteration;
     private List<Double> calculationList = new ArrayList<>();
     private RequestData requestData;
     private ResponseData responseData = new ResponseData();
@@ -31,25 +32,24 @@ public class Calculating
         {
             throw new NullPointerException("The request data must be set.");
         }
-        this.realFrom = requestData.getRealFrom();
-        this.realTo = requestData.getRealTo();
-        this.imaginaryFrom = requestData.getImaginaryFrom();
-        this.imaginaryTo = requestData.getImaginaryTo();
-        this.interval = requestData.getIntervall();
-        this.iteration = requestData.getMaxIteration();
+        this.realFrom = BigDecimal.valueOf(requestData.getRealFrom());
+        this.realTo = BigDecimal.valueOf(requestData.getRealTo());
+        this.imaginaryFrom = BigDecimal.valueOf(requestData.getImaginaryFrom());
+        this.imaginaryTo = BigDecimal.valueOf(requestData.getImaginaryTo());
+        this.interval = BigDecimal.valueOf(requestData.getIntervall());
+        this.iteration = BigDecimal.valueOf(requestData.getMaxIteration());
 
         calculationList.clear();
-
         return this;
     }
 
     Calculating calc()
     {
-        for (Double real = realFrom; real <= realTo; real =  real + interval)
+        for (BigDecimal real = realFrom; real.compareTo(realTo) == -1 || real.compareTo(realTo) == 0; real = real.add(interval))
         {
-            for (Double imaginary = imaginaryFrom; imaginary <= imaginaryTo; imaginary = imaginary + interval)
+            for (BigDecimal imaginary = imaginaryFrom; imaginary.compareTo(imaginaryTo) == -1 || imaginary.compareTo(imaginaryTo) == 0; imaginary = imaginary.add(interval))
             {
-                getCalculationList().add(mandelbrot(real, imaginary, iteration));
+                getCalculationList().add(mandelbrot(real, imaginary, iteration).doubleValue());
             }
         }
         return this;
@@ -76,19 +76,20 @@ public class Calculating
         return responseData;
     }
 
-    private Double mandelbrot(Double real, Double imag, Integer iteration)
+    private BigDecimal mandelbrot(BigDecimal real, BigDecimal imag, BigDecimal iteration)
     {
-        Complex c = new Complex(real, imag);
+        Complex c = new Complex(real.doubleValue(), imag.doubleValue());
         Complex z = new Complex(0.0, 0.0);
 
-        for (int i = 0; i <= iteration; ++i)
+        for (BigDecimal i = BigDecimal.ZERO; i.compareTo(iteration) == -1 || i.compareTo(iteration) == 0; i = i.add(BigDecimal.ONE))
         {
             z = z.times(z).plus(c);
             if ((z.real() * z.real()) + (z.imag() * z.imag()) >= 4)
             {
-                return (double) i;
+                return i;
             }
         }
-        return (double) iteration;
+
+        return iteration;
     }
 }

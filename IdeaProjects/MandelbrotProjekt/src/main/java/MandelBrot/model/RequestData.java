@@ -1,6 +1,5 @@
 package MandelBrot.model;
 
-
 public class RequestData
 {
     private Double RealFrom;
