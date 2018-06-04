@@ -6,7 +6,7 @@ public class RequestData
     private Double RealTo;
     private Double ImaginaryFrom;
     private Double ImaginaryTo;
-    private Double Intervall;
+    private Double Interval;
     private Integer MaxIteration;
 
     public void setRealFrom(Double realFrom)
@@ -49,14 +49,14 @@ public class RequestData
         return ImaginaryTo;
     }
 
-    public void setIntervall(Double intervall)
+    public void setInterval(Double interval)
     {
-        Intervall = intervall;
+        Interval = interval;
     }
 
-    public Double getIntervall()
+    public Double getInterval()
     {
-        return Intervall;
+        return Interval;
     }
 
     public void setMaxIteration(Integer maxIteration)
